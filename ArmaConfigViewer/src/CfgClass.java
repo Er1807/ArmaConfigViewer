@@ -19,8 +19,14 @@ public class CfgClass {
 			inhereted = arr[1];
 		}
 		name = clazzstr.split(":")[0].split(",")[0];
-		CfgClass preclazz = Test.clazzes.get(clazzstr.substring(0,clazzstr.lastIndexOf("/")));
-		if(preclazz!=null)preclazz.classes.put(arr[0], this);
+		try {
+			CfgClass preclazz = Test.clazzes.get(clazzstr.substring(0,clazzstr.lastIndexOf("/")));
+			if(preclazz!=null)preclazz.classes.put(arr[0], this);
+		}catch (Exception e) {
+			System.out.println("Error on "+clazzstr);
+		}
+		
+		
 
 			
 		// Test.clazzes.get("")

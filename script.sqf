@@ -13,10 +13,14 @@ TB_process_Class = {
 		if(isText _x) then {([_x, (getText _x)]) call TB_Log_Property};
 		if(isArray _x) then {([_x, (getArray _x)]) call TB_Log_Property};
 		if(isClass _x) then {_x call TB_process_Class};
+		systemChat ("Processed " + str _this); 
 	}forEach (configProperties [_this, "true", false]);
 };
+0 spawn{
+	(configFile) call TB_process_Class;
+};
 
-(configFile >> "CfgVehicles") call TB_process_Class;
+configFile >> "CfgVehicles") call TB_process_Class;
 (configFile >> "CfgWeapons") call TB_process_Class;
 (configFile >> "CfgMagazines") call TB_process_Class;
 (configFile >> "CfgAmmo") call TB_process_Class;

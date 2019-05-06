@@ -15,9 +15,9 @@ public class Test {
 
 	public static void main(String[] args) throws IOException {
 		long start = System.currentTimeMillis();
-		BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\Eric\\Desktop\\ammodump.rpt"));
+		BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\Eric\\Desktop\\cfgdump.rpt"));
 		String str = "";
-
+		int counter = 0;
 		while ((str = reader.readLine()) != null) {
 
 			Matcher match = allmatch.matcher(str);
@@ -49,8 +49,11 @@ public class Test {
 				}
 
 			}
+			counter++;
+			if(counter%1000==0)System.out.println("Finished "+counter);
 
 		}
+		System.out.println("Finished Reading");
 		for (CfgClass cfgClass : clazzes.values()) {
 			cfgClass.rebuild();
 		}
