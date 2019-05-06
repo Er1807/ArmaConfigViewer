@@ -4,9 +4,7 @@ TB_Log_Class = {
 TB_Log_Property = {
 	diag_log ["TB_ACV_Property_Non_Inhereted", _this];
 };
-TB_Log_Property_Inhereted = {
-	diag_log ["TB_ACV_Property_Inhereted", _this];
-};
+
 TB_process_Class = {
 	([_this, inheritsFrom _this]) call TB_Log_Class;
 	
@@ -16,12 +14,6 @@ TB_process_Class = {
 		if(isArray _x) then {([_x, (getArray _x)]) call TB_Log_Property};
 		if(isClass _x) then {_x call TB_process_Class};
 	}forEach (configProperties [_this, "true", false]);
-	{
-		if(isNumber _x) then {([_x, (getNumber _x)]) call TB_Log_Property_Inhereted};
-		if(isText _x) then {([_x, (getText _x)]) call TB_Log_Property_Inhereted};
-		if(isArray _x) then {([_x, (getArray _x)]) call TB_Log_Property_Inhereted};
-		if(isClass _x) then {_x call TB_process_Class};
-	}forEach (configProperties [_this, "true", true] - configProperties [_this, "true", false]);
 };
 
 (configFile >> "CfgVehicles") call TB_process_Class;

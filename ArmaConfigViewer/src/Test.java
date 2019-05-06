@@ -15,7 +15,7 @@ public class Test {
 
 	public static void main(String[] args) throws IOException {
 		long start = System.currentTimeMillis();
-		BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\Er018U.muclvad1\\Desktop\\ammodump.rpt"));
+		BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\Eric\\Desktop\\ammodump.rpt"));
 		String str = "";
 
 		while ((str = reader.readLine()) != null) {
@@ -50,6 +50,9 @@ public class Test {
 
 			}
 
+		}
+		for (CfgClass cfgClass : clazzes.values()) {
+			cfgClass.rebuild();
 		}
 		System.out.println(clazzes.get("bin\\config.bin/CfgAmmo/M_AT"));
 		System.out.println(clazzes.size());
