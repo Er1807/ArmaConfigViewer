@@ -16,7 +16,7 @@ public class Test {
 
 	public static void main(String[] args) throws IOException {
 		long start = System.currentTimeMillis();
-		BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\Er018U.muclvad1\\Desktop\\cfgdump.rpt"));
+		BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\Eric\\Desktop\\cfgdump.rpt"));
 		String str = "";
 		int counter = 0;
 		while ((str = reader.readLine()) != null) {
@@ -58,15 +58,25 @@ public class Test {
 			cfgClass.rebuild();
 		}
 		System.out.println("Finished Rebuilding");
-		System.out.println(System.currentTimeMillis()-start);
+		System.out.println("Time took: " + ( System.currentTimeMillis()-start));
+		System.out.println("Classes: " + clazzes.size());
 		
 		Scanner sc = new Scanner(System.in);
 		while(true) {
 			try {
 				String sr = sc.nextLine();
-				System.out.println(sr);
-				
-				CfgCompare.compare(clazzes.get(sr.split(";")[0]), clazzes.get(sr.split(";")[1]));
+				if(sr.startsWith("find ")) {
+					sr = sr.substring(5);
+					System.out.println("Found:");
+					for (String key : clazzes.keySet()) {
+						if(key.contains(sr)){
+							System.out.println(key);
+						}
+					}
+				}else if(sr.startsWith("compare ")){
+					sr = sr.substring(8);
+					CfgCompare.compare(clazzes.get(sr.split(";")[0]), clazzes.get(sr.split(";")[1]));
+				}
 			} catch (Exception e) {
 			}
 		}
