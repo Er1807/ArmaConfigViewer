@@ -76,6 +76,9 @@ public class Test {
 				}else if(sr.startsWith("compare ")){
 					sr = sr.substring(8);
 					CfgCompare.compare(clazzes.get(sr.split(";")[0]), clazzes.get(sr.split(";")[1]));
+				}else if(sr.startsWith("print ")){
+					sr = sr.substring(6);
+					System.out.println(clazzes.get(sr.split(";")[0]));
 				}
 			} catch (Exception e) {
 			}
