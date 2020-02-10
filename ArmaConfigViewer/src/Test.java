@@ -19,7 +19,7 @@ public class Test {
 	public static void main(String[] args) throws IOException {
 		long start = System.currentTimeMillis();
 		BufferedReader reader = new BufferedReader(
-				new FileReader("C:/Users/Er018u.MUCLVAD1/Documents/Github/ArmaConfigViewer/cfgdump.rpt"));
+				new FileReader("/home/theia/cfgdump.rpt"));
 		String str = "";
 		int counter = 0;
 		while ((str = reader.readLine()) != null) {
@@ -68,7 +68,7 @@ public class Test {
 		try {
 			System.out.println("Exporting");
 			counter = 0;
-			String home = "C:/Users/Eric/Documents/Github/ArmaConfigViewer/files";
+			String home = "/home/theia";
 			new File(home).mkdirs();
 			for (String key : clazzes.keySet()) {
 				String path = key.replace("bin\\config.bin", "");

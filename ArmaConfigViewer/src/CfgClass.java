@@ -11,6 +11,7 @@ public class CfgClass {
 	HashMap<String, String> inhpropertertiesSource = new HashMap<>();
 	HashMap<String, CfgClass> classes = new HashMap<>();
 	HashMap<String, CfgClass> inhclasses = new HashMap<>();
+	HashMap<String, String> inhclassesSource = new HashMap<>();
 	
 	private boolean _rebuilt;
 	
@@ -66,24 +67,45 @@ public class CfgClass {
 				for (String key : inheretedClass.allClassKeys()) {
 					if(!classes.containsKey(key))
 						inhclasses.put(key, inheretedClass.getClass(key));
+						inhclassesSource.put(key, inheretedClass.inhclassesSource.getOrDefault(key, inheretedClass.name));
 				}
 			}
 			_rebuilt = true;
 		}
 	}
 	
-	
+	public void getParents(ArrayList<String> toAdd){
+
+		if(Test.clazzes.containsKey(inhereted)) {
+			Test.clazzes.get(inhereted).getParents(toAdd);
+		}
+		toAdd.add(name.replace("bin\\config.bin/", ""));
+	}
 
 	@Override
 	public String toString() {
 		StringBuilder b = new StringBuilder();
+		if(Test.clazzes.containsKey(inhereted)) {
+			ArrayList<String> parents = new ArrayList<String>();
+			Test.clazzes.get(inhereted).getParents(parents);
+			b.append("Parent: [");
+			for (String name : parents) {
+				b.append(name+",");
+			}
+			b.append("]\r\n");
+		}
 		
-		b.append("Parent: " + inhereted+"\r\n");
 		for (Entry<String, String> entry : properterties.entrySet()) {
 			b.append(entry.getKey()+" = "+entry.getValue()+"\r\n");
 		}
 		for (Entry<String, String> entry : inhproperterties.entrySet()) {
-			b.append(inhpropertertiesSource.get(entry.getKey())+": "+entry.getKey()+" = "+entry.getValue()+"\r\n");
+			b.append(inhpropertertiesSource.get(entry.getKey()).replace("bin\\config.bin/", "")+": "+entry.getKey()+" = "+entry.getValue()+"\r\n");
+		}
+		for (Entry<String, CfgClass> entry : classes.entrySet()) {
+			b.append(entry.getKey()+" = class\r\n");
+		}
+		for (Entry<String, CfgClass> entry : inhclasses.entrySet()) {
+			b.append(inhclassesSource.get(entry.getKey()).replace("bin\\config.bin/", "")+": "+entry.getKey().replace("bin\\config.bin/", "")+" = class\r\n");
 		}
 		return b.toString();
 	}
