@@ -8,6 +8,7 @@ public class CfgClass {
 	String inhereted = "";
 	HashMap<String, String> properterties = new HashMap<>();
 	HashMap<String, String> inhproperterties = new HashMap<>();
+	HashMap<String, String> inhpropertertiesSource = new HashMap<>();
 	HashMap<String, CfgClass> classes = new HashMap<>();
 	HashMap<String, CfgClass> inhclasses = new HashMap<>();
 	
@@ -27,9 +28,6 @@ public class CfgClass {
 		}
 		
 		
-
-			
-		// Test.clazzes.get("")
 	}
 	
 	public String getProperty(String key) {
@@ -56,15 +54,18 @@ public class CfgClass {
 
 	public void rebuild() {
 		if(!_rebuilt) {
-			if(Test.clazzes.get(inhereted)!=null) {
-				Test.clazzes.get(inhereted).rebuild();
-				for (String key : Test.clazzes.get(inhereted).allKeys()) {
-					if(!properterties.containsKey(key))
-						inhproperterties.put(key, Test.clazzes.get(inhereted).getProperty(key));
+		CfgClass inheretedClass = Test.clazzes.get(inhereted);
+			if(inheretedClass!=null) {
+				inheretedClass.rebuild();
+				for (String key : inheretedClass.allKeys()) {
+					if(!properterties.containsKey(key)) {
+						inhproperterties.put(key, inheretedClass.getProperty(key));
+						inhpropertertiesSource.put(key, inheretedClass.inhpropertertiesSource.getOrDefault(key, inheretedClass.name));
+					}
 				}
-				for (String key : Test.clazzes.get(inhereted).allClassKeys()) {
+				for (String key : inheretedClass.allClassKeys()) {
 					if(!classes.containsKey(key))
-						inhclasses.put(key, Test.clazzes.get(inhereted).getClass(key));
+						inhclasses.put(key, inheretedClass.getClass(key));
 				}
 			}
 			_rebuilt = true;
@@ -76,18 +77,14 @@ public class CfgClass {
 	@Override
 	public String toString() {
 		StringBuilder b = new StringBuilder();
-		b.append("Name: " + name+"\r\n");
-		b.append("Inhereted: " + inhereted+"\r\n");
+		
+		b.append("Parent: " + inhereted+"\r\n");
 		for (Entry<String, String> entry : properterties.entrySet()) {
-			b.append("new  "+entry.getKey()+"="+entry.getValue()+"\r\n");
+			b.append(entry.getKey()+" = "+entry.getValue()+"\r\n");
 		}
-		b.append("\r\n");
 		for (Entry<String, String> entry : inhproperterties.entrySet()) {
-			b.append("old  "+entry.getKey()+"="+entry.getValue()+"\r\n");
+			b.append(inhpropertertiesSource.get(entry.getKey())+": "+entry.getKey()+" = "+entry.getValue()+"\r\n");
 		}
-		b.append("\r\n");
-		b.append(allClassKeys()+"\r\n");
-		b.append("Subclasscount: "+classes.size()+" "+inhclasses.size());
 		return b.toString();
 	}
 

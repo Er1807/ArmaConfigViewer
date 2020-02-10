@@ -1,8 +1,10 @@
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,7 +18,8 @@ public class Test {
 
 	public static void main(String[] args) throws IOException {
 		long start = System.currentTimeMillis();
-		BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\Eric\\Desktop\\cfgdump.rpt"));
+		BufferedReader reader = new BufferedReader(
+				new FileReader("C:/Users/Er018u.MUCLVAD1/Documents/Github/ArmaConfigViewer/cfgdump.rpt"));
 		String str = "";
 		int counter = 0;
 		while ((str = reader.readLine()) != null) {
@@ -49,7 +52,8 @@ public class Test {
 
 			}
 			counter++;
-			if(counter%1000==0)System.out.println("Finished "+counter);
+			if (counter % 1000 == 0)
+				System.out.println("Finished " + counter);
 
 		}
 		reader.close();
@@ -58,35 +62,34 @@ public class Test {
 			cfgClass.rebuild();
 		}
 		System.out.println("Finished Rebuilding");
-		System.out.println("Time took: " + ( System.currentTimeMillis()-start));
+		System.out.println("Time took: " + (System.currentTimeMillis() - start));
 		System.out.println("Classes: " + clazzes.size());
-		
-		Scanner sc = new Scanner(System.in);
-		while(true) {
-			try {
-				String sr = sc.nextLine();
-				if(sr.startsWith("find ")) {
-					sr = sr.substring(5);
-					System.out.println("Found:");
-					for (String key : clazzes.keySet()) {
-						if(key.contains(sr)){
-							System.out.println(key);
-						}
-					}
-				}else if(sr.startsWith("compare ")){
-					sr = sr.substring(8);
-					CfgCompare.compare(clazzes.get(sr.split(";")[0]), clazzes.get(sr.split(";")[1]));
-				}else if(sr.startsWith("print ")){
-					sr = sr.substring(6);
-					System.out.println(clazzes.get(sr.split(";")[0]));
-				}
-			} catch (Exception e) {
+
+		try {
+			System.out.println("Exporting");
+			counter = 0;
+			String home = "C:/Users/Eric/Documents/Github/ArmaConfigViewer/files";
+			new File(home).mkdirs();
+			for (String key : clazzes.keySet()) {
+				String path = key.replace("bin\\config.bin", "");
+				new File(home + path+ ".properties").getParentFile().mkdirs();
+				if(!clazzes.get(key).classes.isEmpty())
+					new File(home + path).mkdirs();
+				new File(home + path+ ".properties").createNewFile();
+				BufferedWriter writer = new BufferedWriter(new FileWriter(home + path+ ".properties"));
+				writer.write(clazzes.get(key).toString());
+				writer.close();
+				
+				counter++;
+				if (counter % 1000 == 0)
+					System.out.println("Exportet " + counter);
 			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		//CfgCompare.compare(clazzes.get("bin\\config.bin/CfgWeapons/rhs_weap_rshg2"), clazzes.get("bin\\config.bin/CfgWeapons/rhs_weap_rpg18"));
-		
-		
-		
+
+
 	}
 
 	private static String removeflSquareBrackets(String clazzstr) {
